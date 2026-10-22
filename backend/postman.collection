@@ -1,0 +1,286 @@
+{
+  "info": {
+    "name": "Blog API - /post",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Crea post (default: draft, Brian Fox)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/post",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "post"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Hello\",\n  \"body\": \"Primo post\",\n  \"hashtags\": [\n    \"#ts\",\n    \"mongodb\"\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+              "const json = pm.response.json();",
+              "pm.collectionVariables.set('postId', json._id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Crea post (status e autore espliciti)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/post",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "post"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Post pubblico\",\n  \"body\": \"Testo\",\n  \"hashtags\": [\n    \"news\"\n  ],\n  \"status\": \"published\",\n  \"author\": \"Mario Rossi\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+              "const json = pm.response.json();",
+              "pm.collectionVariables.set('postId', json._id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Lista tutti i post",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/post",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "post"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Lista filtrata per status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/post?status=published",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "post"
+          ],
+          "query": [
+            {
+              "key": "status",
+              "value": "published"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Lista filtrata per hashtag",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/post?hashtag=mongodb",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "post"
+          ],
+          "query": [
+            {
+              "key": "hashtag",
+              "value": "mongodb"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Lista filtrata per autore e status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/post?author=Brian%20Fox&status=draft",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "post"
+          ],
+          "query": [
+            {
+              "key": "author",
+              "value": "Brian%20Fox"
+            },
+            {
+              "key": "status",
+              "value": "draft"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Singolo post",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/post/{{postId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "post",
+            "{{postId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Aggiorna status",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/post/{{postId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "post",
+            "{{postId}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"published\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Aggiorna titolo e hashtag",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/post/{{postId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "post",
+            "{{postId}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Nuovo titolo\",\n  \"hashtags\": [\n    \"#aggiornato\",\n    \"ts\"\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Elimina post",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/post/{{postId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "post",
+            "{{postId}}"
+          ]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "postId",
+      "value": ""
+    }
+  ]
+}
